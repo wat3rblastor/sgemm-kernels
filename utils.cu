@@ -1,8 +1,10 @@
 #include "utils.cuh"
-#include "kernels"
+#include "kernel.cuh"
 
 #include <stdexcept>
 #include <string>
+
+#define CEIL_DIV(M, N) ((M) + (N)-1) / (N)
 
 /*
 CUDA Operations
@@ -43,7 +45,7 @@ void copy_matrix(float* src, float* dst, int n) {
 }
 
 bool verify_matrix(float* M1, float* M2, int n) {
-  if (!src || !dst) {
+  if (!M1 || !M2) {
     throw std::invalid_argument("copy_matrix requires non_null src and dst");
   }
   
@@ -80,7 +82,7 @@ static void launch_cublas(const SgemmParams &params) {
 
 static void launch_sgemm_v1(const SgemmParams &params) {
     dim3 blockDim(32, 32);
-    dim3 gridDim(CEIL_DIV(params.m, 32), CEIL_DIV(params.n, 32));
+    dim3 gridDim(CEIL_DIV(params.n, 32), CEIL_DIV(params.m, 32));
     sgemm_v1<<<gridDim, blockDim>>>(params.m, params.n, params.k, params.alpha, params.A, params.B, params.beta, params.C);
 }
 
@@ -105,6 +107,7 @@ std::array<int, kSizeCount> make_sizes() {
   for (int i = 0; i < kSizeCount; ++i) {
     sizes[i] = kSizeStep * (i + 1);
   }
+  return sizes;
 }
 
 int parse_kernel_num(const char* arg) {

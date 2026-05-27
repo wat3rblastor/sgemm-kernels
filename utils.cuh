@@ -6,7 +6,7 @@
 #include <cublas_v2.h>
 
 constexpr int kFirstKernel = 0;
-constexpr int kLastKernel = 7;
+constexpr int kLastKernel = 1;
 constexpr int kWarmupCount = 3;
 constexpr int kRepeatTimes = 10;
 constexpr int kSizeCount = 16;
@@ -40,7 +40,7 @@ struct SgemmParams {
   cublasHandle_t handle;
 };
 
-void launch_kernel(int, const SgemmParams&)
+void launch_kernel(int, const SgemmParams&);
 
 /*
 Misc. Operations

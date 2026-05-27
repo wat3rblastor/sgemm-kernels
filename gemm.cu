@@ -6,7 +6,7 @@
 #include "utils.cu"
 
 int main(int argc, char** argv) try {
-  int (argc != 2) {
+  if (argc != 2) {
     throw std::invalid_argument("Usage: ./gemm <kernel_num>");
   }
 
@@ -25,6 +25,11 @@ int main(int argc, char** argv) try {
   std::vector<float> host_b(element_count);
   std::vector<float> host_c(element_count);
   std::vector<float> host_c_ref(element_count);
+
+  randomize_matrix(host_a.data(), static_cast<int>(element_count));
+  randomize_matrix(host_b.data(), static_cast<int>(element_count));
+  randomize_matrix(host_c.data(), static_cast<int>(element_count));
+  copy_matrix(host_c.data(), host_c_ref.data(), static_cast<int>(element_count));
 
   float* device_a = nullptr;
   float* device_b = nullptr;
@@ -76,7 +81,7 @@ int main(int argc, char** argv) try {
     }
 
     // Warmup to prevent cold start
-    for (int warmup = 0; warmup < kWarmup; ++warmup) {
+    for (int warmup = 0; warmup < kWarmupCount; ++warmup) {
       launch_kernel(kernel_num, params);
     }
 
@@ -99,7 +104,8 @@ int main(int argc, char** argv) try {
               << ") FGLOPs/s. size: (" << m << ")." << std::endl;
 
     // Sync C with C_ref for next iteration
-    copy_matrix(host_c_ref.dat(), host_c.data(), m * n);
+    // No longer testing with the same C/C_ref, but that's okay
+    copy_matrix(host_c_ref.data(), host_c.data(), m * n);
   }
 
   // Note that the idiomatic C++ way is to wrap all these resources with RAII
