@@ -1,6 +1,10 @@
 #include "utils.cuh"
 #include "kernel.cuh"
 
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <random>
 #include <stdexcept>
 #include <string>
 
