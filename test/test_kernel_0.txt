@@ -1,0 +1,34 @@
+Select kernel 0
+max_size=4096
+m=n=k=256
+Average elapsed time: (9.1136e-06) seconds, performance : (3681.8) FGLOPs/s. size: (256).
+m=n=k=512
+Average elapsed time: (2.70336e-05) seconds, performance : (9929.7) FGLOPs/s. size: (512).
+m=n=k=768
+Average elapsed time: (6.912e-05) seconds, performance : (13107.2) FGLOPs/s. size: (768).
+m=n=k=1024
+Average elapsed time: (0.000159642) seconds, performance : (13451.9) FGLOPs/s. size: (1024).
+m=n=k=1280
+Average elapsed time: (0.000296243) seconds, performance : (14158.3) FGLOPs/s. size: (1280).
+m=n=k=1536
+Average elapsed time: (0.000387661) seconds, performance : (18696.1) FGLOPs/s. size: (1536).
+m=n=k=1792
+Average elapsed time: (0.000678605) seconds, performance : (16960) FGLOPs/s. size: (1792).
+m=n=k=2048
+Average elapsed time: (0.00098263) seconds, performance : (17483.6) FGLOPs/s. size: (2048).
+m=n=k=2304
+Average elapsed time: (0.00156396) seconds, performance : (15640.6) FGLOPs/s. size: (2304).
+m=n=k=2560
+Average elapsed time: (0.00214866) seconds, performance : (15616.5) FGLOPs/s. size: (2560).
+m=n=k=2816
+Average elapsed time: (0.00285798) seconds, performance : (15626.7) FGLOPs/s. size: (2816).
+m=n=k=3072
+Average elapsed time: (0.00355656) seconds, performance : (16302.9) FGLOPs/s. size: (3072).
+m=n=k=3328
+Average elapsed time: (0.00462642) seconds, performance : (15934.4) FGLOPs/s. size: (3328).
+m=n=k=3584
+Average elapsed time: (0.00575539) seconds, performance : (15997.8) FGLOPs/s. size: (3584).
+m=n=k=3840
+Average elapsed time: (0.00733092) seconds, performance : (15447.8) FGLOPs/s. size: (3840).
+m=n=k=4096
+Average elapsed time: (0.00997571) seconds, performance : (13777.4) FGLOPs/s. size: (4096).
