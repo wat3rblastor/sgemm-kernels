@@ -1,4 +1,5 @@
-#include <utils.cuh>
+#include "utils.cuh"
+#include "kernels"
 
 #include <stdexcept>
 #include <string>
