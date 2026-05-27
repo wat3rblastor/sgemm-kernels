@@ -44,7 +44,6 @@ Example `kernels/kernel3.cu`:
 #include <cuda_runtime.h>
 
 #include "kernel_registry.cuh"
-#include "launch_utils.cuh"
 
 namespace {
 
@@ -65,7 +64,7 @@ __global__ void sgemm_v3(int m, int n, int k, float alpha, float* A, float* B, f
 
 void launch_sgemm_v3(const SgemmParams& params) {
   dim3 block_dim(32, 32);
-  dim3 grid_dim(ceil_div(params.n, 32), ceil_div(params.m, 32));
+  dim3 grid_dim((params.n + 31) / 32, (params.m + 31) / 32);
   sgemm_v3<<<grid_dim, block_dim>>>(
       params.m,
       params.n,
