@@ -9,10 +9,10 @@ mkdir -p "${OUTPUT_DIR}"
 rm -f "${OUTPUT_DIR}"/test_kernel_*.txt
 
 echo -n "test_kernel:"
-for ((i=0; i<=1; i++))
+while IFS= read -r i
 do
   echo -n "${i}..."
   file_name="${OUTPUT_DIR}/test_kernel_${i}.txt"
   "${BINARY}" "${i}" > "${file_name}"
-done
+done < <("${BINARY}" --list-ids)
 echo

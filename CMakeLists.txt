@@ -8,12 +8,20 @@ set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 
 option(ENABLE_FAST_MATH "Enable --use_fast_math for CUDA builds" ON)
 
+file(GLOB KERNEL_SOURCES CONFIGURE_DEPENDS
+  ${CMAKE_CURRENT_SOURCE_DIR}/kernels/*.cu
+)
+
 add_executable(gemm
-  gemm.cu
+  src/gemm.cu
+  src/utils.cu
+  src/kernel_registry.cu
+  src/cublas_kernel.cu
+  ${KERNEL_SOURCES}
 )
 
 target_include_directories(gemm PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 target_compile_options(gemm PRIVATE

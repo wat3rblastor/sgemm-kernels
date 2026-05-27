@@ -1,21 +1,30 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
-#include "utils.cu"
+#include "kernel_registry.cuh"
+#include "utils.cuh"
 
-int main(int argc, char** argv) try {
-  if (argc != 2) {
-    throw std::invalid_argument("Usage: ./gemm <kernel_num>");
+namespace {
+
+void print_kernel_list(bool ids_only) {
+  for (const auto& kernel : registered_sgemm_kernels()) {
+    if (ids_only) {
+      std::cout << kernel->id() << '\n';
+    } else {
+      std::cout << kernel->id() << ": " << kernel->name() << '\n';
+    }
   }
+}
 
-  const int kernel_num = parse_kernel_num(argv[1]);
-  std::cout << "Select kernel " << kernel_num << std::endl;
+void benchmark_kernel(int kernel_num) {
+  const auto& kernel = get_sgemm_kernel(kernel_num);
+  std::cout << "Select kernel " << kernel.id() << " (" << kernel.name() << ")" << std::endl;
 
   const auto sizes = make_sizes();
   const int max_size = sizes.back();
-  // Square matrices
   const std::size_t element_count = static_cast<std::size_t>(max_size) * max_size;
 
   constexpr float alpha = 1.0f;
@@ -65,8 +74,6 @@ int main(int argc, char** argv) try {
 
     std::cout << "m=n=k=" << size << std::endl;
 
-    // Correctness Check
-    // cuBLAS is assumed to be correct
     if (kernel_num != 0) {
       launch_kernel(0, ref_params);
       launch_kernel(kernel_num, params);
@@ -80,7 +87,6 @@ int main(int argc, char** argv) try {
       }
     }
 
-    // Warmup to prevent cold start
     for (int warmup = 0; warmup < kWarmupCount; ++warmup) {
       launch_kernel(kernel_num, params);
     }
@@ -103,15 +109,9 @@ int main(int argc, char** argv) try {
               << ") seconds, performance : (" << 2.0f * 1.e-9f * kRepeatTimes * m * n * k / elapsed_time_s
               << ") FGLOPs/s. size: (" << m << ")." << std::endl;
 
-    // Sync C with C_ref for next iteration
-    // No longer testing with the same C/C_ref, but that's okay
     copy_matrix(host_c_ref.data(), host_c.data(), m * n);
   }
 
-  // Note that the idiomatic C++ way is to wrap all these resources with RAII
-  // However, I don't want to write all of the boilerplate
-  // Notice that if an error is thrown, we'll have a memory leak, but luckily
-  // CUDA cleans everything up once the process exits
   cudaEventDestroy(begin);
   cudaEventDestroy(end);
   cublasDestroy(handle);
@@ -119,7 +119,27 @@ int main(int argc, char** argv) try {
   cudaFree(device_b);
   cudaFree(device_c);
   cudaFree(device_c_ref);
+}
 
+}  // namespace
+
+int main(int argc, char** argv) try {
+  if (argc == 2 && std::string(argv[1]) == "--list") {
+    print_kernel_list(false);
+    return EXIT_SUCCESS;
+  }
+
+  if (argc == 2 && std::string(argv[1]) == "--list-ids") {
+    print_kernel_list(true);
+    return EXIT_SUCCESS;
+  }
+
+  if (argc != 2) {
+    throw std::invalid_argument("Usage: ./gemm <kernel_num> | --list | --list-ids");
+  }
+
+  benchmark_kernel(parse_kernel_num(argv[1]));
+  return EXIT_SUCCESS;
 } catch (const std::exception& error) {
   std::cerr << error.what() << std::endl;
   return EXIT_FAILURE;
