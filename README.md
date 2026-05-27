@@ -41,6 +41,23 @@ The script will:
   - `./test/test_kernel_0.txt`
   - `./test/test_kernel_1.txt`
 
+## Plot Results
+
+After `run.sh` finishes, generate a comparison plot with:
+
+```bash
+python3 plot.py 0 1
+```
+
+This reads:
+
+- `./test/test_kernel_0.txt`
+- `./test/test_kernel_1.txt`
+
+and writes:
+
+- `./images/kernel_cublas_vs_1.png`
+
 ## Run Manually
 
 You can also run the benchmark directly:
