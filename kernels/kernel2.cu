@@ -18,19 +18,13 @@ __global__ void sgemm_v2(int m, int n, int k, float alpha, float* A, float* B, f
   }
 }
 
-class Kernel2 final : public SgemmKernel {
- public:
-  int id() const override { return 2; }
-  const char* name() const override { return "naive-row-col"; }
-
-  void launch(const SgemmParams& params) const override {
-    dim3 block_dim(32, 32);
-    dim3 grid_dim(ceil_div(params.n, 32), ceil_div(params.m, 32));
-    sgemm_v2<<<grid_dim, block_dim>>>(
-        params.m, params.n, params.k, params.alpha, params.A, params.B, params.beta, params.C);
-  }
-};
+void launch_sgemm_v2(const SgemmParams& params) {
+  dim3 block_dim(32, 32);
+  dim3 grid_dim(ceil_div(params.n, 32), ceil_div(params.m, 32));
+  sgemm_v2<<<grid_dim, block_dim>>>(
+      params.m, params.n, params.k, params.alpha, params.A, params.B, params.beta, params.C);
+}
 
 }  // namespace
 
-REGISTER_SGEMM_KERNEL(Kernel2)
+REGISTER_SGEMM_KERNEL(2, "naive-row-col", launch_sgemm_v2)

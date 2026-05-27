@@ -35,8 +35,8 @@ Each kernel file should:
 
 - include `kernel_registry.cuh`
 - define a CUDA `__global__` kernel
-- define a small class that implements `SgemmKernel`
-- register that class with `REGISTER_SGEMM_KERNEL`
+- define a host launcher with the signature `void(const SgemmParams&)`
+- register that launcher with `REGISTER_SGEMM_KERNEL`
 
 Example `kernels/kernel3.cu`:
 
@@ -63,29 +63,23 @@ __global__ void sgemm_v3(int m, int n, int k, float alpha, float* A, float* B, f
   C[row * n + col] = alpha * acc + beta * C[row * n + col];
 }
 
-class Kernel3 final : public SgemmKernel {
- public:
-  int id() const override { return 3; }
-  const char* name() const override { return "my-new-kernel"; }
-
-  void launch(const SgemmParams& params) const override {
-    dim3 block_dim(32, 32);
-    dim3 grid_dim(ceil_div(params.n, 32), ceil_div(params.m, 32));
-    sgemm_v3<<<grid_dim, block_dim>>>(
-        params.m,
-        params.n,
-        params.k,
-        params.alpha,
-        params.A,
-        params.B,
-        params.beta,
-        params.C);
-  }
-};
+void launch_sgemm_v3(const SgemmParams& params) {
+  dim3 block_dim(32, 32);
+  dim3 grid_dim(ceil_div(params.n, 32), ceil_div(params.m, 32));
+  sgemm_v3<<<grid_dim, block_dim>>>(
+      params.m,
+      params.n,
+      params.k,
+      params.alpha,
+      params.A,
+      params.B,
+      params.beta,
+      params.C);
+}
 
 }  // namespace
 
-REGISTER_SGEMM_KERNEL(Kernel3)
+REGISTER_SGEMM_KERNEL(3, "my-new-kernel", launch_sgemm_v3)
 ```
 
 The `SgemmParams` fields are:
@@ -97,8 +91,8 @@ The `SgemmParams` fields are:
 - `alpha`, `beta`: SGEMM scale factors
 - `handle`: cuBLAS handle, available if your implementation needs cuBLAS helpers
 
-Choose a unique integer for `id()`. Kernel `0` is reserved for the cuBLAS
-reference. `run.sh` and `./build/gemm --list` use the registered IDs, so there
+Choose a unique integer ID. Kernel `0` is reserved for the cuBLAS reference.
+`run.sh` and `./build/gemm --list` use the registered IDs, so there
 is no separate launcher table to update.
 
 After adding the file, rebuild:

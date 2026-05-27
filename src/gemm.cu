@@ -12,16 +12,16 @@ namespace {
 void print_kernel_list(bool ids_only) {
   for (const auto& kernel : registered_sgemm_kernels()) {
     if (ids_only) {
-      std::cout << kernel->id() << '\n';
+      std::cout << kernel.id << '\n';
     } else {
-      std::cout << kernel->id() << ": " << kernel->name() << '\n';
+      std::cout << kernel.id << ": " << kernel.name << '\n';
     }
   }
 }
 
 void benchmark_kernel(int kernel_num) {
   const auto& kernel = get_sgemm_kernel(kernel_num);
-  std::cout << "Select kernel " << kernel.id() << " (" << kernel.name() << ")" << std::endl;
+  std::cout << "Select kernel " << kernel.id << " (" << kernel.name << ")" << std::endl;
 
   const auto sizes = make_sizes();
   const int max_size = sizes.back();
