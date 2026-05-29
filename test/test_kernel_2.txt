@@ -1,0 +1,34 @@
+Select kernel 2 (shared-mem)
+max_size=4096
+m=n=k=256
+Average elapsed time: (1.82272e-05) seconds, performance : (1840.9) FGLOPs/s. size: (256).
+m=n=k=512
+Average elapsed time: (0.000125952) seconds, performance : (2131.25) FGLOPs/s. size: (512).
+m=n=k=768
+Average elapsed time: (0.000411334) seconds, performance : (2202.51) FGLOPs/s. size: (768).
+m=n=k=1024
+Average elapsed time: (0.000942269) seconds, performance : (2279.06) FGLOPs/s. size: (1024).
+m=n=k=1280
+Average elapsed time: (0.00195031) seconds, performance : (2150.58) FGLOPs/s. size: (1280).
+m=n=k=1536
+Average elapsed time: (0.00339384) seconds, performance : (2135.56) FGLOPs/s. size: (1536).
+m=n=k=1792
+Average elapsed time: (0.00556268) seconds, performance : (2069) FGLOPs/s. size: (1792).
+m=n=k=2048
+Average elapsed time: (0.0083762) seconds, performance : (2051.03) FGLOPs/s. size: (2048).
+m=n=k=2304
+Average elapsed time: (0.0121552) seconds, performance : (2012.41) FGLOPs/s. size: (2304).
+m=n=k=2560
+Average elapsed time: (0.0166845) seconds, performance : (2011.11) FGLOPs/s. size: (2560).
+m=n=k=2816
+Average elapsed time: (0.0222166) seconds, performance : (2010.25) FGLOPs/s. size: (2816).
+m=n=k=3072
+Average elapsed time: (0.028801) seconds, performance : (2013.2) FGLOPs/s. size: (3072).
+m=n=k=3328
+Average elapsed time: (0.0366251) seconds, performance : (2012.8) FGLOPs/s. size: (3328).
+m=n=k=3584
+Average elapsed time: (0.0457604) seconds, performance : (2012.07) FGLOPs/s. size: (3584).
+m=n=k=3840
+Average elapsed time: (0.0562965) seconds, performance : (2011.6) FGLOPs/s. size: (3840).
+m=n=k=4096
+Average elapsed time: (0.0681916) seconds, performance : (2015.48) FGLOPs/s. size: (4096).
