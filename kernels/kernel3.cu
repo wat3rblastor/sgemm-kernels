@@ -100,4 +100,4 @@ void launch_sgemm_v3(const SgemmParams& params) {
 
 }  // namespace
 
-REGISTER_SGEMM_KERNEL(3, "warp-tiling", launch_sgemm_v3)
+REGISTER_SGEMM_KERNEL(3, "reg-tiling", launch_sgemm_v3)
