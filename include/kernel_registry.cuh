@@ -4,12 +4,10 @@
 
 #include "sgemm_params.cuh"
 
-using SgemmLaunchFn = void (*)(const SgemmParams&);
-
 struct SgemmKernel {
   int id;
   const char* name;
-  SgemmLaunchFn launch;
+  void (*launch)(const SgemmParams&);
 };
 
 bool register_sgemm_kernel(SgemmKernel kernel);
