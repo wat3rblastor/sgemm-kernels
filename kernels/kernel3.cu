@@ -83,7 +83,7 @@ __global__ void sgemm_v3(int m, int n, int k, float alpha, float* A, float* B,
 }
 
 void launch_sgemm_v3(const SgemmParams& params) {
-  constexpr int BLOCK_SIZE = 32;
+  constexpr int BLOCK_SIZE = 64;
 
   // TM has to divide into BLOCK_SIZE evenly
   // Similarly for TN
