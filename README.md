@@ -25,6 +25,15 @@ cmake --build build -j
 
 This produces the executable at `./build/gemm`.
 
+## Benchmarking
+
+For fair benchmarking, pin the GPU graphics clocks so the GPU does not
+dynamically change clock rate between kernel runs:
+
+```bash
+sudo nvidia-smi -lgc 1650,1650
+```
+
 ## Add a Kernel
 
 Kernels are self-registering. To add a new implementation, you only need to add
