@@ -107,7 +107,7 @@ void benchmark_kernel(int kernel_num) {
     const float elapsed_time_s = elapsed_time_ms / 1000.0f;
     std::cout << "Average elapsed time: (" << elapsed_time_s / kRepeatTimes
               << ") seconds, performance : (" << 2.0f * 1.e-9f * kRepeatTimes * m * n * k / elapsed_time_s
-              << ") FGLOPs/s. size: (" << m << ")." << std::endl;
+              << ") GFLOPs/s. size: (" << m << ")." << std::endl;
 
     copy_matrix(host_c_ref.data(), host_c.data(), m * n);
   }

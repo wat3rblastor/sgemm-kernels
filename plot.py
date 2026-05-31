@@ -11,7 +11,7 @@ def parse_file(path):
     
   data = []
   pattern = re.compile(
-    r"Average elapsed time: \((.*?)\) seconds, performance : \((.*?)\) FGLOPs/s\. size: \((.*?)\)\."
+    r"Average elapsed time: \((.*?)\) seconds, performance : \((.*?)\) GFLOPs/s\. size: \((.*?)\)\."
   )
   for line in lines:
     match = pattern.match(line)
